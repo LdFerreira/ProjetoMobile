@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ProjetoFinal</string>
+    <string name="labelUsuario">User</string>
+    <string name="labelSenha">Password</string>
+    <string name="labelCadastrar">Register</string>
+    <string name="label_pesquisar_shopping">Search Shopping</string>
+    <string name="label_shopping_favoritado">Shopping malls you favorited</string>
+    <string name="labelNãoPussuiConta">There is no account</string>
+    <string name="hintSenha">Type your password</string>
+    <string name="hintNomeUsuario">" Type your name"</string>
+    <string name="hintNomeShopping">" Type mall name"</string>
+    <string name="btnCadastrar">Register</string>
+    <string name="btnEntrar">Log in</string>
+    <string name="btnBuscar">Search</string>
+    <string name="btnVoltar">return</string>
+    <string name="btnCadastrese">Register now</string>
+    <string name="btnPraça">" Food court"</string>
+    <string name="btnEventos">Events</string>
+    <string name="btnCinema">" Movie theater"</string>
+    <string name="btnLojas">Stores</string>
+    <string name="btnEstacionamento">Parking</string>
+    <string name="btnServiços">Services</string>
+    <string name="labelR8">R8Store</string>
+</resources>
