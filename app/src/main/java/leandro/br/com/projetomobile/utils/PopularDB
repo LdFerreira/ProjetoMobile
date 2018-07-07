@@ -1,0 +1,26 @@
+
+create database mobileapi;
+
+use mobileapi;
+
+create table shopping (
+  id int primary key auto_increment not null,
+  nome varchar(255),
+  rating varchar(255),
+  endereco varchar(255)
+);
+
+create table user (
+  id int primary key auto_increment not null,
+  login varchar(255),
+  senha varchar(255)
+);
+
+INSERT INTO shopping (nome, rating, endereco)
+VALUES ("Shopping Iguatemi", "3.5", "Centro - Florianopolis");
+INSERT INTO shopping (nome, rating, endereco)
+VALUES ("Shopping Itaguacu", "4.5", "Sao Jose");
+INSERT INTO shopping (nome, rating, endereco)
+VALUES ("Shopping BeiraMar", "4", "BeiraMar - Florianopolis");
+INSERT INTO shopping (nome, rating, endereco)
+VALUES ("Shopping Floripa", "3", "Norte da Ilha - Florianopolis");
