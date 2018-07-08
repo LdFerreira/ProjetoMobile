@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ProjetoFinal</string>
+    <string name="app_name">ProjetcFinal</string>
     <string name="labelUsuario">User</string>
     <string name="labelSenha">Password</string>
     <string name="labelCadastrar">Register</string>
@@ -22,4 +22,9 @@
     <string name="btnEstacionamento">Parking</string>
     <string name="btnServiços">Services</string>
     <string name="labelR8">R8Store</string>
+    <string name="labelLogin">Login</string>
+    <string name="hintLogin">Type your Login</string>
+    <string name="labelNaoPossuiCadastro">Click for register</string>
+    <string name="pesquisar_shopping">Search Mall</string>
+    <string name="shopping_favoritado">Favorite Mal</string>
 </resources>

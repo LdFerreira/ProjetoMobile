@@ -1,28 +1,18 @@
 package leandro.br.com.projetomobile.Entity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.ThemedSpinnerAdapter;
-import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import leandro.br.com.projetomobile.DAO.MyORMLiteHelper;
-import leandro.br.com.projetomobile.Entity.Shopping;
-import leandro.br.com.projetomobile.MainActivity;
 import leandro.br.com.projetomobile.R;
 
 /**
@@ -76,7 +66,7 @@ public class AdapterAutocomplete extends ArrayAdapter<Shopping> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         banco = MyORMLiteHelper.getInstance(ctx);
-       s = listaShopping.get(position);
+        s = listaShopping.get(position);
 
         convertView = inflate.inflate(R.layout.layout_autocomplete, null);
         TextView tv = convertView.findViewById(R.id.editNomeShopping);

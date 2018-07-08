@@ -37,9 +37,11 @@ public class MainActivity extends Activity {
 
     MyORMLiteHelper banco;
     ArrayList<Shopping> listaShopping;
-    AdapterAutocomplete adapterShoppings;
+    /*AdapterAutocomplete adapterShoppings;*/
+    ArrayAdapter<Shopping> adapterShoppings;
     AutoCompleteTextView textView;
     ArrayList<Shopping> shoppingFavoritos;
+    ListView listShopping;
     ListView listShoppingsFavoritos;
     AdapterlistFavoritos adapterShoppingFavoritos;
     Shopping shops = null;
@@ -59,18 +61,22 @@ public class MainActivity extends Activity {
                 try {
                     JSONArray json = new JSONArray(new String(response));
                     Type listType =
-                            new TypeToken<ArrayList<Shopping>>(){}.getType();
-                    listaShopping = (ArrayList<Shopping>) new Gson().fromJson(String.valueOf(json), listType);
+                            new TypeToken<ArrayList<Shopping>>() {
+                            }.getType();
+                    listaShopping = new Gson().fromJson(String.valueOf(json), listType);
 
-                    adapterShoppings = new AdapterAutocomplete(MainActivity.this, listaShopping);
-                    adapterShoppings.setShoppingFavoritos(shoppingFavoritos);
-                    textView = (AutoCompleteTextView) findViewById(R.id.autoComplete);
-                    textView.setAdapter(adapterShoppings);
+                    adapterShoppings = new ArrayAdapter<Shopping>(MainActivity.this, android.R.layout.simple_list_item_1,
+                            listaShopping);
+                    listShopping = findViewById(R.id.listShopping);
+                    listShopping.setOnItemLongClickListener(cliqueLongo());
+                    listShopping.setOnItemClickListener(cliqueCurto());
+                    listShopping.setAdapter(adapterShoppings);
                     Toast.makeText(MainActivity.this, "Logado com sucesso", Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
@@ -79,13 +85,12 @@ public class MainActivity extends Activity {
 
         });
 
-        // list view dos shoppings favoritos populando
+
         try {
             shoppingFavoritos = (ArrayList<Shopping>) banco.getShoppingDAO().queryForAll();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
 
 
         listShoppingsFavoritos = findViewById(R.id.listFavoritos);
@@ -100,7 +105,7 @@ public class MainActivity extends Activity {
                 AlertDialog.Builder alerta = new AlertDialog.Builder(MainActivity.this);
                 alerta.setTitle("Visualizando Shopping");
                 alerta.setMessage(shops.toString());
-                alerta.setNeutralButton("fechar", null);
+                alerta.setNeutralButton("Cancelar", null);
                 alerta.setPositiveButton("Visitar Shopping", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -108,7 +113,7 @@ public class MainActivity extends Activity {
                         startActivity(i);
                     }
                 });
-                alerta.setNeutralButton("remover favorito", new DialogInterface.OnClickListener() {
+                alerta.setNeutralButton("Remover favorito", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -125,10 +130,10 @@ public class MainActivity extends Activity {
             }
         });
 
-        }
+    }
 
 
-    public void teste(View v){
+    public void teste(View v) {
         textView.setText(String.valueOf(v.getTag()));
         textView.dismissDropDown();
     }
@@ -141,15 +146,68 @@ public class MainActivity extends Activity {
 //    }
 
 
-    public void buscarShopping(View view) {
-        textView = (AutoCompleteTextView) findViewById(R.id.autoComplete);
-        if (textView.getText().toString().length()== 0) {
-            Toast.makeText(this, "Campo vazio selecione um shopping", Toast.LENGTH_SHORT).show();
-        }else {
-            Intent i = new Intent(MainActivity.this, NavegacaoActivity.class);
-            startActivity(i);
-        }
+
+
+    private AdapterView.OnItemLongClickListener cliqueLongo() {
+        return new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                //Resgaatar a produto escolhido
+                shops = adapterShoppings.getItem(position);
+
+                //Alerta
+                AlertDialog.Builder alerta = new AlertDialog.Builder(MainActivity.this);
+                alerta.setTitle("Adicionando a Favorito");
+                alerta.setIcon(android.R.drawable.ic_menu_delete);
+                alerta.setMessage("Deseja adicionar o shopping " + shops.getNome() + " a favorito ?");
+                alerta.setNeutralButton("Não", null);
+                alerta.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        shoppingFavoritos.add(shops);
+                        try {
+                            banco.getShoppingDAO().create(shops);
+                            adapterShoppingFavoritos.notifyDataSetChanged();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                });
+                alerta.show();
+
+                return true;
+            }
+        };
     }
+    private AdapterView.OnItemClickListener cliqueCurto() {
+        return new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+
+                shops = adapterShoppings.getItem(i); // i = position
+
+                //Criar um Dialog perguntando se quer editar
+                AlertDialog.Builder alerta = new AlertDialog.Builder(MainActivity.this);
+                alerta.setTitle("Visualizado dados");
+                alerta.setIcon(android.R.drawable.ic_menu_view);
+                alerta.setMessage(shops.toString());
+                alerta.setNeutralButton("Fechar", null);
+                alerta.setPositiveButton("Visitar Shopping", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(MainActivity.this, NavegacaoActivity.class);
+                        startActivity(i);
+                    }
+                });
+                alerta.show();
+            }
+        };
+    }
+
 }
 
 
